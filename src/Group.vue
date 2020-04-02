@@ -1,12 +1,12 @@
 <template>
-  <div class="group_node">
+  <div class="group">
 
     <div class="current_node_container">
 
       <!-- button to expand or contract the node -->
       <chevron-right-icon
         class="expand_button"
-        v-bind:class="expand_button_class"
+        v-bind:class="{chevron_open: open}"
         v-on:click="toggle_node()"/>
 
 
@@ -34,9 +34,8 @@
             v-bind:group="child"/>
           </template>
 
-        <div
-          class=""
-          v-else>
+        <!-- Indicator of no groups -->
+        <div class="" v-else>
           -
         </div>
 
@@ -100,7 +99,7 @@ export default {
       .catch( (error) => {
         console.log(error)
       })
-      .finally( () => {this.loading = false})
+      .finally( () => { this.loading = false })
     },
     close_node(){
       this.open = false;
@@ -111,10 +110,7 @@ export default {
     }
   },
   computed: {
-    expand_button_class(){
-      if(this.open) return "chevron_open"
-      else return "chevron_closed"
-    }
+
   }
 }
 </script>
@@ -130,7 +126,6 @@ export default {
 }
 
 .current_node_container > * {
-
   cursor: pointer;
 }
 
@@ -151,7 +146,13 @@ export default {
   text-align: center;
 
 
-  transition: transform 0.25s;
+  transition:
+    transform 0.25s,
+    color 0.25s;
+}
+
+.expand_button:hover {
+  color: #c00000;
 }
 
 .chevron_open{

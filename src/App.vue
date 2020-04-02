@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <UserPicker msg="Welcome to Your Vue.js App"/>
+    <UserPicker
+      class="picker"
+      apiUrl="http://172.16.98.151:8097"/>
   </div>
 </template>
 
@@ -15,6 +17,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.picker{
+  outline: 1px solid red;
+  height: 200px;
+}
 </style>
