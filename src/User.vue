@@ -6,10 +6,11 @@
       class="avatar"
       v-if="user.properties.avatar_src"
       v-bind:src="user.properties.avatar_src">
-    <img
+
+    <account-icon
       v-else
-      class="avatar"
-      src="@/assets/account.png">
+      size="1em"
+      class="avatar"/>
 
     <div class="">
       {{user.properties.name_kanji}}
@@ -19,11 +20,12 @@
 </template>
 
 <script>
+import AccountIcon from 'vue-material-design-icons/Account.vue';
 
 export default {
   name: 'User',
   components: {
-
+    AccountIcon,
   },
   props: {
     user: Object,
