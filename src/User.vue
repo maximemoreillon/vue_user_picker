@@ -1,8 +1,20 @@
 <template>
-  <div class="user">
+  <div class="user"
+    v-on:click="$emit('selection', user)">
+
+    <img
+      class="avatar"
+      v-if="user.properties.avatar_src"
+      v-bind:src="user.properties.avatar_src">
+    <img
+      v-else
+      class="avatar"
+      src="@/assets/account.png">
+
     <div class="">
       {{user.properties.name_kanji}}
     </div>
+
    </div>
 </template>
 
@@ -26,6 +38,9 @@ export default {
   },
   methods: {
 
+  },
+  computed: {
+
   }
 }
 </script>
@@ -36,13 +51,33 @@ export default {
 
 .user {
   cursor: pointer;
-  margin: 1px;
 
-  transition: color 0.25s;
+  display: flex;
+  align-items: center;
+
+  padding: 2px;
+
+  transition:
+    color 0.25s,
+    background-color 0.25s;
+}
+
+.user > *:not(:last-child){
+  margin-right: 5px;
+}
+
+.avatar {
+  height: 1em;
+  width: 1em;
+  object-fit: contain;
+}
+
+.user:not(:last-child){
+  border-bottom: 1px solid #dddddd;
 }
 
 .user:hover{
-  color: #c00000;
+  background-color: #eeeeee;
 }
 
 </style>

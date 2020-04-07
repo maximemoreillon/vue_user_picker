@@ -12,7 +12,7 @@
 
       <span
         class="node_name_container"
-        v-on:click="$emit('nodeSelected',group)">
+        v-on:click="$emit('selection',group)">
         {{group.properties.original_name}}
       </span>
 
@@ -30,7 +30,7 @@
             v-for="child in groups"
             v-bind:key="child.identity.low"
             v-bind:apiUrl="apiUrl"
-            v-on:nodeSelected="$emit('nodeSelected',$event)"
+            v-on:selection="$emit('selection',$event)"
             v-bind:group="child"/>
           </template>
 

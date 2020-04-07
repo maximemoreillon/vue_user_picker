@@ -1,27 +1,26 @@
 <template>
   <div class="user_picker">
 
-    <div class="groups_container">
-      <template v-if="!groups_loading">
-        <Group
-          v-for="group in groups"
-          v-bind:group="group"
-          v-bind:key="group.identity.low"
-          v-bind:apiUrl="apiUrl"
-          v-on:nodeSelected="get_employees_belonging_to_node($event)"/>
-      </template>
-      <loader v-else />
-    </div>
+    <GroupPicker
+    class="node_container groups_container"
+    v-on:selection="get_users_of_group($event)"
+    v-bind:apiUrl="apiUrl"/>
 
-    <div class="users_container">
+
+    <div class="node_container users_container">
       <template v-if="!users_loading">
         <User
           v-for="user in users"
           v-bind:user="user"
           v-bind:key="user.identity.low"
-          v-on:click="$emit('selection',employee)"/>
+          v-on:selection="$emit('selection', $event)"/>
       </template>
-      <loader v-else />
+
+      <!-- wrapper loader so it can be centered in the div -->
+      <div class="loader_wrapper" v-else>
+        <loader />
+      </div>
+
     </div>
 
   </div>
@@ -31,9 +30,9 @@
 
 import axios from 'axios'
 //import VueCookies from 'vue-cookies'
-import Group from './Group.vue'
 import User from './User.vue'
 
+import GroupPicker from '@moreillon/vue_group_picker'
 import Loader from '@moreillon/vue_loader'
 
 export default {
@@ -42,51 +41,34 @@ export default {
     apiUrl: String,
   },
   components: {
-    Group,
+    GroupPicker,
     User,
 
     Loader
   },
   data(){
     return {
-      groups: [],
-      groups_loading: false,
 
       users: [],
       users_loading: false,
     }
   },
-  mounted(){
-    this.get_highest_hierarchy_groups()
-  },
+  mounted(){},
   methods: {
-    get_highest_hierarchy_groups(){
-      this.groups_loading = true;
 
-      axios.post(`${this.apiUrl}/get_highest_hierarchy_groups`, {})
-      .then(response => {
-        this.groups.splice(0,this.groups.length)
-        response.data.forEach((record) => {
-          let group = record._fields[record._fieldLookup['group']]
-          this.groups.push(group)
-        });
-
-      })
-      .catch( (error) => { console.log(error) })
-      .finally( () => { this.groups_loading = false })
-    },
-
-    get_employees_belonging_to_node(group){
+    get_users_of_group(group){
       this.users_loading = true;
-      axios.post(`${this.apiUrl}/get_users_of_group`, {group_id: group.identity.low})
+      axios.get(`${this.apiUrl}/users_of_group`, {
+        params: {id: group.identity.low}
+      })
       .then(response => {
         this.users.splice(0,this.users.length)
         response.data.forEach((record) => {
-          let user = record._fields[record._fieldLookup['employee']]
+          let user = record._fields[record._fieldLookup['user']]
           this.users.push(user)
         });
       })
-      .catch(error => console.log(error))
+      .catch(error => console.log(error.response.data))
       .finally( () => { this.users_loading = false })
     },
   }
@@ -97,9 +79,10 @@ export default {
 <style scoped>
 .user_picker {
   display: flex;
+  flex-wrap: wrap;
 }
 
-.user_picker > div {
+.node_container {
   /* share space horizontally */
   flex-grow: 1;
   flex-shrink: 1;
@@ -107,5 +90,17 @@ export default {
 
   height: 100%;
   overflow-y: auto;
+
+  min-width: 300px;
+
+  border: 1px solid #dddddd;
+}
+
+.loader_wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 200%;
 }
 </style>
