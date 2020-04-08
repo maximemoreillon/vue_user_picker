@@ -2,9 +2,10 @@
   <div class="user_picker">
 
     <GroupPicker
-    class="node_container groups_container"
-    v-on:selection="get_users_of_group($event)"
-    v-bind:apiUrl="apiUrl"/>
+      class="node_container groups_container"
+      v-on:selection="get_users_of_group($event)"
+      v-bind:apiUrl="apiUrl"
+      usersWithNoGroup/>
 
 
     <div class="node_container users_container">
@@ -58,18 +59,33 @@ export default {
 
     get_users_of_group(group){
       this.users_loading = true;
-      axios.get(`${this.apiUrl}/users_of_group`, {
-        params: {id: group.identity.low}
-      })
-      .then(response => {
-        this.users.splice(0,this.users.length)
-        response.data.forEach((record) => {
-          let user = record._fields[record._fieldLookup['user']]
-          this.users.push(user)
-        });
-      })
-      .catch(error => console.log(error.response.data))
-      .finally( () => { this.users_loading = false })
+      if(group){
+        axios.get(`${this.apiUrl}/users_of_group`, {
+          params: {id: group.identity.low}
+        })
+        .then(response => {
+          this.users.splice(0,this.users.length)
+          response.data.forEach((record) => {
+            let user = record._fields[record._fieldLookup['user']]
+            this.users.push(user)
+          });
+        })
+        .catch(error => console.log(error.response.data))
+        .finally( () => { this.users_loading = false })
+      }
+      else {
+        axios.get(`${this.apiUrl}/users_with_no_group`)
+        .then(response => {
+          this.users.splice(0,this.users.length)
+          response.data.forEach((record) => {
+            let user = record._fields[record._fieldLookup['user']]
+            this.users.push(user)
+          });
+        })
+        .catch(error => console.log(error.response.data))
+        .finally( () => { this.users_loading = false })
+      }
+
     },
   }
 }
