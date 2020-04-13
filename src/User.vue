@@ -7,43 +7,53 @@
       v-if="user.properties.avatar_src"
       v-bind:src="user.properties.avatar_src">
 
-    <account-icon
-      v-else
-      size="1em"
-      class="avatar"/>
+    <font-awesome-icon
+      icon="user"
+      v-else/>
 
     <div class="">
       {{user.properties.name_kanji}}
     </div>
 
+    <div class="growing_spacer"/>
+
+    <a
+      v-if="userPageUrl"
+      v-bind:href="userPageUrl"
+      v-on:click.stop>
+      <font-awesome-icon
+        icon="info-circle"/>
+    </a>
+
+
+
    </div>
 </template>
 
 <script>
-import AccountIcon from 'vue-material-design-icons/Account.vue';
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+  faUser,
+  faInfoCircle,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(
+  faUser,
+  faInfoCircle
+)
 
 export default {
   name: 'User',
   components: {
-    AccountIcon,
+    FontAwesomeIcon,
   },
   props: {
     user: Object,
+    userPageUrl: String,
   },
-  data(){
-    return{
 
-    }
-  },
-  mounted(){
-
-  },
-  methods: {
-
-  },
-  computed: {
-
-  }
 }
 </script>
 
@@ -65,7 +75,7 @@ export default {
 }
 
 .user > *:not(:last-child){
-  margin-right: 5px;
+  margin-right: 0.5em;
 }
 
 .avatar {
@@ -80,6 +90,19 @@ export default {
 
 .user:hover{
   background-color: #eeeeee;
+}
+
+.growing_spacer {
+  flex-grow: 1;
+}
+
+a {
+  text-decoration: none;
+  color: currentColor;
+}
+
+a:hover {
+  color: #c00000;
 }
 
 </style>

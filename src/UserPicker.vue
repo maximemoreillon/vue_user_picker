@@ -5,6 +5,7 @@
       class="node_container groups_container"
       v-on:selection="get_users_of_group($event)"
       v-bind:apiUrl="apiUrl"
+      v-bind:groupPageUrl="groupPageUrl"
       usersWithNoGroup/>
 
 
@@ -14,7 +15,8 @@
           v-for="user in users"
           v-bind:user="user"
           v-bind:key="user.identity.low"
-          v-on:selection="$emit('selection', $event)"/>
+          v-on:selection="$emit('selection', $event)"
+          v-bind:userPageUrl="userPageUrl"/>
       </template>
 
       <!-- wrapper loader so it can be centered in the div -->
@@ -40,6 +42,8 @@ export default {
   name: 'UserPicker',
   props: {
     apiUrl: String,
+    groupPageUrl: String,
+    userPageUrl: String,
   },
   components: {
     GroupPicker,
