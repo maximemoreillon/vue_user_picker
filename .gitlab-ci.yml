@@ -6,7 +6,9 @@ build:
   stage: build
   script:
     - pwd
-    - npm install
-    - npm run build
+    - ls -al
+    #- npm install
+    #- npm run build
     - cd ~
     - pwd
+    - ls -al
