@@ -8,3 +8,5 @@ build:
     - pwd
     - npm install
     - npm run build
+    - cd ~
+    - pwd
