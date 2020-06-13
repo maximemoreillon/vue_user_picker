@@ -5,4 +5,6 @@ stages:
 build:
   stage: build
   script:
+    - pwd
     - npm install
+    - npm run build
