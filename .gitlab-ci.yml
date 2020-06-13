@@ -5,10 +5,5 @@ stages:
 build:
   stage: build
   script:
-    - pwd
-    - ls -al
-    #- npm install
-    #- npm run build
-    - cd ~
-    - pwd
-    - ls -al
+    - cp ${NPMRC} ~/.npmrc
+    - npm login
