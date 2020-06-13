@@ -1,0 +1,12 @@
+stages:
+  - build
+  - deployment
+
+variables:
+  APPLICATION_NAME: group-manager-front
+  DOCKER_IMAGE: ${CONTAINER_REGISTRY}/${APPLICATION_NAME}
+
+containerization:
+  stage: build
+  script:
+    - npm install

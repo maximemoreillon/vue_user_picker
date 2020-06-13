@@ -12,7 +12,7 @@
       v-else/>
 
     <div class="">
-      {{user.properties.name_kanji}}
+      {{user.properties.display_name}}
     </div>
 
     <div class="growing_spacer"/>
