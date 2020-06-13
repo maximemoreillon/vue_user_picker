@@ -1,9 +1,17 @@
 stages:
   - build
-
+  - publish
 
 build:
   stage: build
   script:
+    - npm install
+    - npm run build
+
+publish:
+  stage: publish
+  script:
+    - npm install npm-bump
+    - npm-bump patch
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
     - npm publish
