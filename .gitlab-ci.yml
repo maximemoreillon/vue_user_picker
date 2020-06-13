@@ -8,7 +8,7 @@ publish:
     - npm install
     - npm run build
     # Bump version
-    - npm version patch
+    - npm --no-git-tag-version version patch
     # Auth and publish to NPM
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
     - npm publish
