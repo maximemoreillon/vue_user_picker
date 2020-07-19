@@ -12,7 +12,11 @@
       v-else/>
 
     <div class="">
-      {{user.properties.display_name}}
+      {{user_displayed_name}}
+    </div>
+
+    <div class="" v-if="user.properties.role">
+      ({{user.properties.role}})
     </div>
 
     <div class="growing_spacer"/>
@@ -53,6 +57,16 @@ export default {
     user: Object,
     userPageUrl: String,
   },
+  computed: {
+    user_displayed_name() {
+      return this.user.properties.display_name
+        || this.user.properties.name_kanji
+        || this.user.properties.name
+        || this.user.properties.full_name
+        || this.user.properties.username
+        || 'Unnamed user'
+    }
+  }
 
 }
 </script>

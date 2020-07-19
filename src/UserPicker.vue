@@ -10,17 +10,22 @@
 
 
     <div class="node_container users_container">
-      <template v-if="!users_loading">
-        <User
-          v-for="user in users"
-          v-bind:user="user"
-          v-bind:key="user.identity.low"
-          v-on:selection="$emit('selection', $event)"
-          v-bind:userPageUrl="userPageUrl"/>
-      </template>
+
+      <UsersTable
+        v-if="!users_loading && selected_group !== undefined"
+        :users="users"
+        :selected_group="selected_group"/>
+
+      <div
+        class="no_selection_wrappper"
+        v-if="!users_loading && selected_group === undefined">
+        Group not selected
+      </div>
 
       <!-- wrapper loader so it can be centered in the div -->
-      <div class="loader_wrapper" v-else>
+      <div
+        class="loader_wrapper"
+        v-if="users_loading">
         <loader />
       </div>
 
@@ -32,8 +37,7 @@
 <script>
 
 import axios from 'axios'
-//import VueCookies from 'vue-cookies'
-import User from './User.vue'
+import UsersTable from './UsersTable.vue'
 
 import GroupPicker from '@moreillon/vue_group_picker'
 import Loader from '@moreillon/vue_loader'
@@ -41,13 +45,15 @@ import Loader from '@moreillon/vue_loader'
 export default {
   name: 'UserPicker',
   props: {
-    apiUrl: String,
+    apiUrl: {
+      type: String,
+      default(){return process.env.VUE_APP_GROUP_MANAGER_API_URL}
+    },
     groupPageUrl: String,
-    userPageUrl: String,
   },
   components: {
     GroupPicker,
-    User,
+    UsersTable,
 
     Loader
   },
@@ -56,39 +62,29 @@ export default {
 
       users: [],
       users_loading: false,
+      selected_group: undefined,
     }
   },
   mounted(){},
   methods: {
 
     get_users_of_group(group){
-      this.users_loading = true;
-      if(group){
-        axios.get(`${this.apiUrl}/users_of_group`, {
-          params: {id: group.identity.low}
-        })
-        .then(response => {
-          this.users.splice(0,this.users.length)
-          response.data.forEach((record) => {
-            let user = record._fields[record._fieldLookup['user']]
-            this.users.push(user)
-          });
-        })
-        .catch(error => console.log(error.response.data))
-        .finally( () => { this.users_loading = false })
-      }
-      else {
-        axios.get(`${this.apiUrl}/users_with_no_group`)
-        .then(response => {
-          this.users.splice(0,this.users.length)
-          response.data.forEach((record) => {
-            let user = record._fields[record._fieldLookup['user']]
-            this.users.push(user)
-          });
-        })
-        .catch(error => console.log(error.response.data))
-        .finally( () => { this.users_loading = false })
-      }
+      this.users_loading = true
+      this.selected_group = group
+
+      let group_id = 'none'
+      if(group) group_id = group.identity.low
+
+      axios.get(`${this.apiUrl}/groups/${group_id}/members`)
+      .then(response => {
+        this.users.splice(0,this.users.length)
+        response.data.forEach((record) => {
+          let user = record._fields[record._fieldLookup['user']]
+          this.users.push(user)
+        });
+      })
+      .catch(error => console.log(error.response.data))
+      .finally( () => { this.users_loading = false })
 
     },
   }
@@ -122,5 +118,12 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 200%;
+}
+
+.no_selection_wrappper{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

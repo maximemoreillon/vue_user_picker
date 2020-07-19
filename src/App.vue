@@ -2,7 +2,7 @@
   <div id="app">
     <UserPicker
       class="picker"
-      apiUrl="http://172.16.98.151:7000"
+      apiUrl="http://172.16.98.151:31999"
       userPageUrl="http://172.16.98.151:31097/"
       groupPageUrl="http://172.16.98.151:31097/group"
       v-on:selection="selection($event)"/>
