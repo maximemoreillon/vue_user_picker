@@ -14,7 +14,8 @@
       <UsersTable
         v-if="!users_loading && selected_group !== undefined"
         :users="users"
-        :selected_group="selected_group"/>
+        :selected_group="selected_group"
+        @selection="$emit('selection',$event)"/>
 
       <div
         class="no_selection_wrappper"

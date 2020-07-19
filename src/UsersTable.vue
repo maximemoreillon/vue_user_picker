@@ -11,7 +11,7 @@
       v-for="user in users"
       v-bind:user="user"
       v-bind:key="user.identity.low"
-      @:click="$emit('selection', $event)">
+      @click="$emit('selection', user)">
 
       <td class="avatar_cell">
         <img
