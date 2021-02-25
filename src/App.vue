@@ -2,9 +2,6 @@
   <div id="app">
     <UserPicker
       class="picker"
-      apiUrl="http://172.16.98.151:31999"
-      userPageUrl="http://172.16.98.151:31097/"
-      groupPageUrl="http://172.16.98.151:31097/group"
       @selection="selection($event)"/>
   </div>
 </template>
@@ -19,7 +16,8 @@ export default {
   },
   methods: {
     selection(data){
-      alert(data)
+      const display_name = data.properties.display_name
+      alert(`You clicked ${display_name}`)
     }
   }
 }

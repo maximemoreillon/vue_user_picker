@@ -1,57 +1,59 @@
 <template>
-  <table class="users_table">
+  <div class="table_wrapper">
 
-    <tr>
-      <th></th>
-      <th>名前 / Name</th>
-      <th>立場 / Role</th>
-    </tr>
-    <tr
-      class="user_row"
-      v-for="user in users"
-      v-bind:user="user"
-      v-bind:key="user.identity.low"
-      @click="$emit('selection', user)">
+    <table class="users_table">
 
-      <td class="avatar_cell">
-        <img
-          class="avatar"
-          v-if="user.properties.avatar_src"
-          v-bind:src="user.properties.avatar_src">
+      <tr>
+        <th></th>
+        <th>名前 / Name</th>
+        <!-- Role is mainly for companies -->
+        <th>立場 / Role</th>
+        <th></th>
+      </tr>
+      <!-- Stringifying identity for new Neo4J structure -->
+      <tr
+        class="user_row"
+        v-for="user in users"
+        v-bind:user="user"
+        v-bind:key="JSON.stringify(user.identity)"
+        @click="$emit('selection', user)">
 
-        <font-awesome-icon
-          icon="user"
-          v-else/>
-      </td>
+        <td class="avatar_cell">
+          <img
+            class="avatar"
+            v-if="user.properties.avatar_src"
+            v-bind:src="user.properties.avatar_src">
 
-      <td>
-        {{user_displayed_name(user)}}
-      </td>
-
-      <td>
-        {{user.properties.role}}
-      </td>
-
-      <!-- Link to user profile -->
-      <td>
-        <a
-          v-if="user_page_url(user)"
-          v-bind:href="user_page_url(user)"
-          v-on:click.stop>
           <font-awesome-icon
-            icon="info-circle"/>
-        </a>
-      </td>
+            icon="user"
+            v-else/>
+        </td>
 
+        <td>
+          {{user_displayed_name(user)}}
+        </td>
 
+        <td>
+          {{user.properties.role}}
+        </td>
 
+        <!-- Link to user profile -->
+        <td>
+          <a
+            v-if="user_page_url(user)"
+            v-bind:href="user_page_url(user)"
+            v-on:click.stop>
 
+            <font-awesome-icon
+              icon="external-link-alt"/>
+          </a>
+        </td>
 
+      </tr>
 
+    </table>
+  </div>
 
-    </tr>
-
-  </table>
 </template>
 
 <script>
@@ -60,14 +62,15 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 import {
   faUser,
-  faInfoCircle,
+  faExternalLinkAlt,
+
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(
   faUser,
-  faInfoCircle
+  faExternalLinkAlt
 )
 
 export default {
@@ -88,10 +91,14 @@ export default {
         || 'Unnamed user'
     },
     user_page_url(user) {
-      if(process.env.VUE_APP_EMPLOYEE_MANAGER_FRONT_URL){
-        return `${process.env.VUE_APP_EMPLOYEE_MANAGER_FRONT_URL}/?id=${user.identity.low}`
-      }
-      else return null
+      const user_manager_front_url = process.env.VUE_APP_USER_MANAGER_FRONT_URL
+        || process.env.VUE_APP_EMPLOYEE_MANAGER_FRONT_URL
+
+      if(!user_manager_front_url) return null
+
+      const user_id = user.identity.low || user.identity
+
+      return `${process.env.user_manager_front_url}/users/${user_id}`
 
     }
   }
@@ -101,7 +108,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.table_wrapper{
+  margin: 0.5em;
+}
 table {
   width: 100%;
   text-align: left;

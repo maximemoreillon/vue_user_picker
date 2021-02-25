@@ -65,6 +65,9 @@ export default {
         || this.user.properties.full_name
         || this.user.properties.username
         || 'Unnamed user'
+    },
+    user_profile_url(){
+      return
     }
   }
 
