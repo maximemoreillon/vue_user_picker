@@ -216,12 +216,14 @@ export default {
 
 .search_wrapper {
   display: flex;
-  margin: 0.5em;
+  align-items: center;
+  margin: 1em 0.5em;
   margin-bottom: 1em;
 }
 
 .search_wrapper input {
   margin-right: 0.5em;
+  padding: 0.25em;
   flex-grow: 1;
   border: none;
   border-bottom: 1px solid #444444;
