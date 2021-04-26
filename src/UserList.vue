@@ -86,8 +86,7 @@ export default {
     },
 
     view_profile (user) {
-      const user_id = user.identity.low || user.identity
-      const url = `${this.userManagerFrontUrl}/users/${user_id}`
+      const url = `${this.userManagerFrontUrl}/users/${user.identity}`
       window.open(url)
     }
   }

@@ -117,17 +117,11 @@ export default {
       this.selected_group = group
 
       let group_id = 'none'
-      if(group) group_id = group.identity.low || group.identity
+      if(group) group_id = group.identity
 
-      const url = `${this.groupManagerApiUrl}/groups/${group_id}/members`
+      const url = `${this.groupManagerApiUrl}/v2/groups/${group_id}/members`
       axios.get(url)
-      .then(response => {
-        this.users.splice(0,this.users.length)
-        response.data.forEach((record) => {
-          const user = record._fields[record._fieldLookup['user']]
-          this.users.push(user)
-        });
-      })
+      .then( ({data}) => { this.users = data })
       .catch(error => {
         if(error.response) console.error(error.response.data)
         else console.error(error)
