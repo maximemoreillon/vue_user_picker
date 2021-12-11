@@ -46,7 +46,6 @@
 <script>
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import IdUtils from '@/IdUtils.js'
 
 import {
   faUser,
@@ -66,8 +65,6 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  mixins: [IdUtils],
-
   props: {
     users: Array,
     userManagerFrontUrl: {
@@ -79,6 +76,12 @@ export default {
     }
   },
   methods: {
+    get_id_of_item(item){
+      return item._id
+        || item.properties._id
+        || item.identity.low
+        || item.identity
+    },
     user_displayed_name(user) {
       return user.properties.display_name
         || user.properties.name_kanji
