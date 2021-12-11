@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     selection(data){
-      const display_name = data.properties.display_name
+      const {display_name} = data.properties
       alert(`You clicked ${display_name} (ID: ${data.identity})`)
     }
   }

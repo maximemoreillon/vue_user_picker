@@ -57,6 +57,8 @@ import UserList from './UserList.vue'
 import GroupPicker from '@moreillon/vue_group_picker'
 import Loader from '@moreillon/vue_loader'
 
+import IdUtils from '@/IdUtils.js'
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 import {
@@ -89,6 +91,7 @@ export default {
       }
     }
   },
+  mixins: [IdUtils],
   components: {
     GroupPicker,
     UserList,
@@ -117,7 +120,7 @@ export default {
       this.selected_group = group
 
       let group_id = 'none'
-      if(group) group_id = group.identity
+      if(group) group_id = this.get_id_of_item(group)
 
       const url = `${this.groupManagerApiUrl}/v2/groups/${group_id}/members`
       axios.get(url)

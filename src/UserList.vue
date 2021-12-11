@@ -3,8 +3,8 @@
 
     <div
       class="user"
-      v-for="user in users"
-      v-bind:key="JSON.stringify(user.identity)"
+      v-for="(user, index) in users"
+      v-bind:key="`user_${index}`"
       @click="$emit('selection', user)">
 
       <div class="avatar_wrapper">
@@ -46,6 +46,7 @@
 <script>
 
 import { library } from '@fortawesome/fontawesome-svg-core'
+import IdUtils from '@/IdUtils.js'
 
 import {
   faUser,
@@ -65,6 +66,8 @@ export default {
   components: {
     FontAwesomeIcon,
   },
+  mixins: [IdUtils],
+
   props: {
     users: Array,
     userManagerFrontUrl: {
@@ -86,8 +89,9 @@ export default {
     },
 
     view_profile (user) {
-      const url = `${this.userManagerFrontUrl}/users/${user.identity}`
-      window.open(url)
+      const user_id = this.get_id_of_item(user)
+      const url = `${this.userManagerFrontUrl}/users/${user_id}`
+      window.open(url, '_blank')
     }
   }
 
