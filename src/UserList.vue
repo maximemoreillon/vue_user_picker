@@ -10,19 +10,16 @@
       <div class="avatar_wrapper">
         <img
           class="avatar"
-          v-if="user.properties.avatar_src"
-          v-bind:src="user.properties.avatar_src">
+          v-if="user.avatar_src"
+          v-bind:src="user.avatar_src">
 
         <font-awesome-icon
           icon="user"
           v-else/>
       </div>
-      <div class="name">
-        {{user_displayed_name(user)}}
-      </div>
-      <div class="" v-if="user.properties.role">
-        ({{user.properties.role}})
-      </div>
+
+      <div class="name">{{user_displayed_name(user)}}</div>
+      <div class="" v-if="user.role">({{user.role}})</div>
 
       <div class="spacer" />
 
@@ -78,16 +75,13 @@ export default {
   methods: {
     get_id_of_item(item){
       return item._id
-        || item.properties._id
-        || item.identity.low
-        || item.identity
     },
     user_displayed_name(user) {
-      return user.properties.display_name
-        || user.properties.name_kanji
-        || user.properties.name
-        || user.properties.full_name
-        || user.properties.username
+      return user.display_name
+        || user.name_kanji
+        || user.name
+        || user.full_name
+        || user.username
         || 'Unnamed user'
     },
 

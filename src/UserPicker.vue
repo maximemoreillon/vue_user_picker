@@ -3,9 +3,9 @@
 
     <GroupPicker
       class="picker_container groups_container"
-      v-on:selection="get_users_of_group($event)"
-      v-bind:groupManagerApiUrl="groupManagerApiUrl"
-      v-bind:groupManagerFrontUrl="groupManagerFrontUrl"
+      @selection="get_users_of_group($event)"
+      :groupManagerApiUrl="groupManagerApiUrl"
+      :groupManagerFrontUrl="groupManagerFrontUrl"
       usersWithNoGroup/>
 
 
@@ -13,7 +13,10 @@
 
       <template v-if="!users_loading && selected_group && !error">
         <div class="search_wrapper">
-          <input type="text" v-model="search">
+          <input
+            placeholder="Search users"
+            type="text"
+            v-model="search">
           <font-awesome-icon
             icon="search"/>
         </div>
@@ -86,6 +89,7 @@ export default {
       default(){
         return process.env.VUE_APP_USER_MANAGER_FRONT_URL
           || process.env.VUE_APP_EMPLOYEE_MANAGER_FRONT_URL
+          || process.env.VUE_APP_GROUP_MANAGER_FRONT_URL
       }
     }
   },
@@ -112,20 +116,15 @@ export default {
     }
   },
   methods: {
-    get_id_of_item(item){
-      return item._id
-        || item.properties._id
-        || item.identity.low
-        || item.identity
-    },
     get_users_of_group(group){
       this.users_loading = true
       this.selected_group = group
 
       let group_id = 'none'
-      if(group) group_id = this.get_id_of_item(group)
+      if(group) group_id = group._id
 
-      const url = `${this.groupManagerApiUrl}/v2/groups/${group_id}/members`
+      const url = `${this.groupManagerApiUrl}/v3/groups/${group_id}/members`
+
       axios.get(url)
       .then( ({data}) => { this.users = data })
       .catch(error => {
@@ -154,8 +153,8 @@ export default {
 
       return this.users.filter(user => {
 
-        return keys_to_check.find((key) => {
-          const value = user.properties[key]
+        return keys_to_check.find( (key) => {
+          const value = user[key]
           if(!value) return false
           return value.toLowerCase().includes(this.search.toLowerCase())
         })
@@ -223,7 +222,7 @@ export default {
 
 .search_wrapper input {
   margin-right: 0.5em;
-  padding: 0.25em;
+  padding: 0.5em 0.25em;
   flex-grow: 1;
   border: none;
   border-bottom: 1px solid #444444;
