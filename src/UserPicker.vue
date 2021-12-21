@@ -120,13 +120,12 @@ export default {
       this.users_loading = true
       this.selected_group = group
 
-      let group_id = 'none'
-      if(group) group_id = group._id
+      const group_id = group._id
 
       const url = `${this.groupManagerApiUrl}/v3/groups/${group_id}/members`
 
       axios.get(url)
-      .then( ({data}) => { this.users = data })
+      .then( ({data}) => { this.users = data.items })
       .catch(error => {
         if(error.response) console.error(error.response.data)
         else console.error(error)
