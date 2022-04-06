@@ -17,8 +17,8 @@
             placeholder="Search users"
             type="text"
             v-model="search">
-          <font-awesome-icon
-            icon="search"/>
+          <MagnifyIcon
+            class="search"/>
         </div>
         <UserList
           :users="filtered_users"
@@ -60,18 +60,11 @@ import UserList from './UserList.vue'
 import GroupPicker from '@moreillon/vue_group_picker'
 import Loader from '@moreillon/vue_loader'
 
-import { library } from '@fortawesome/fontawesome-svg-core'
 
-import {
-  faSearch,
+import MagnifyIcon from 'vue-material-design-icons/Magnify.vue';
 
-} from '@fortawesome/free-solid-svg-icons'
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(
-  faSearch,
-)
 
 export default {
   name: 'UserPicker',
@@ -96,8 +89,7 @@ export default {
   components: {
     GroupPicker,
     UserList,
-
-    FontAwesomeIcon,
+    MagnifyIcon,
     Loader,
   },
   data(){

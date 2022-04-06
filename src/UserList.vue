@@ -13,9 +13,10 @@
           v-if="user.avatar_src"
           v-bind:src="user.avatar_src">
 
-        <font-awesome-icon
-          icon="user"
+        <AccountIcon
+          class="avatar"
           v-else/>
+
       </div>
 
       <div class="name">{{user_displayed_name(user)}}</div>
@@ -23,14 +24,11 @@
 
       <div class="spacer" />
 
-      <div
+
+      <OpenInNewIcon
         class="profile_link"
         v-if="userManagerFrontUrl"
-        v-on:click.stop="view_profile(user)">
-
-        <font-awesome-icon
-          icon="external-link-alt"/>
-      </div>
+        @click.stop="view_profile(user)"/>
 
 
     </div>
@@ -42,25 +40,15 @@
 
 <script>
 
-import { library } from '@fortawesome/fontawesome-svg-core'
+import AccountIcon from 'vue-material-design-icons/Account.vue';
+import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue';
 
-import {
-  faUser,
-  faExternalLinkAlt,
-
-} from '@fortawesome/free-solid-svg-icons'
-
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
-library.add(
-  faUser,
-  faExternalLinkAlt
-)
 
 export default {
   name: 'User',
   components: {
-    FontAwesomeIcon,
+    AccountIcon,
+    OpenInNewIcon
   },
   props: {
     users: Array,
@@ -100,37 +88,61 @@ export default {
 .user {
   display: flex;
   align-items: center;
+  gap: 1em;
   padding: 0.25em;
   cursor: pointer;
+
+  transition: background-color 0.25s;
 
 }
 
 .user:hover{
   background-color: #eeeeee;
 }
-.user:not(:last-child) {
-  border-bottom: 1px solid #dddddd;
+
+
+
+.user_list > *+* {
+  border-top: 1px solid #dddddd;
 }
 
-.user > *:not(:last-child) {
-  margin-right: 1em;
-}
+
 .spacer {
   flex-grow: 1;
 }
 
+
+.material-design-icon {
+  display: flex;
+  align-items: center;
+}
+
 .avatar {
-  height: 1em;
-  width: 1em;
+  height: 1.5em;
+  width: 1.5em;
   object-fit: contain;
 }
 
 .profile_link {
   text-decoration: none;
   color: currentColor;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1em;
+  width: 1em;
+  opacity: 0;
+  transition:
+    color 0.25s,
+    opacity 0.25s;
+}
+
+.user:hover .profile_link {
+  opacity: 1;
 }
 
 .profile_link:hover {
   color: #c00000;
 }
+
 </style>
