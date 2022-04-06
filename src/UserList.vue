@@ -20,7 +20,8 @@
       </div>
 
       <div class="name">{{user_displayed_name(user)}}</div>
-      <div class="" v-if="user.role">({{user.role}})</div>
+      <div class="role" v-if="user.role">({{user.role}})</div>
+      
 
       <div class="spacer" />
 
@@ -115,6 +116,22 @@ export default {
 .material-design-icon {
   display: flex;
   align-items: center;
+}
+
+.name {
+  max-width: 30%;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+
+}
+
+.role {
+  max-width: 30%;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+
 }
 
 .avatar {
