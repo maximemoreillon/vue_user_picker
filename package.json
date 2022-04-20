@@ -1,6 +1,6 @@
 {
   "name": "@moreillon/vue_user_picker",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "main": "dist/UserPicker.umd.js",
   "unpkg": "dist/UserPicker.umd.min.js",
   "module": "dist/UserPicker.esm.js",
