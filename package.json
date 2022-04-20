@@ -18,13 +18,13 @@
   "author": "Maxime Moreillon",
   "license": "MIT",
   "dependencies": {
-    "@moreillon/vue_group_picker": "^5.0.0",
+    "@moreillon/vue_group_picker": "^5.0.2",
     "@moreillon/vue_loader": "^0.1.1",
     "axios": "^0.21.1",
-    "core-js": "^3.21.1",
+    "core-js": "^3.22.1",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
-    "vue-cookies": "^1.7.4",
+    "vue-cookies": "^1.8.0",
     "vue-material-design-icons": "^4.11.0"
   },
   "devDependencies": {
