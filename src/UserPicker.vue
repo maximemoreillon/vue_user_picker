@@ -115,8 +115,9 @@ export default {
       const group_id = group._id
 
       const url = `${this.groupManagerApiUrl}/v3/groups/${group_id}/members`
+      const params = { batch_size: -1 }
 
-      axios.get(url)
+      axios.get(url, {params})
       .then( ({data}) => { this.users = data.items })
       .catch(error => {
         if(error.response) console.error(error.response.data)
