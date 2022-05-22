@@ -4,6 +4,7 @@
     <GroupPicker
       class="picker_container groups_container"
       @selection="get_users_of_group($event)"
+      :selectedGroupId="selectedGroupId"
       :groupManagerApiUrl="groupManagerApiUrl"
       :groupManagerFrontUrl="groupManagerFrontUrl"
       usersWithNoGroup/>
@@ -152,6 +153,10 @@ export default {
         })
 
       })
+    },
+    selectedGroupId(){
+      if(!this.selected_group) return null
+      return this.selected_group._id
     }
   }
 }
