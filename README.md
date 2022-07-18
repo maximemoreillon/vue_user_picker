@@ -1,4 +1,4 @@
-# Group picker
+# User picker
 
 [![npm version](https://badge.fury.io/js/@moreillon%2Fvue_user_picker.svg)](https://badge.fury.io/js/@moreillon%2Fvue_user_picker)
 
