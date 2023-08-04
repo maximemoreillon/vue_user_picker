@@ -98,7 +98,7 @@ export default {
 }
 
 .user:hover{
-  background-color: #eeeeee;
+  background-color: #88888888;
 }
 
 
