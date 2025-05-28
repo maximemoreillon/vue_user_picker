@@ -6,6 +6,7 @@
       :selectedGroupId="selectedGroupId"
       :groupManagerApiUrl="groupManagerApiUrl"
       :groupManagerFrontUrl="groupManagerFrontUrl"
+      :accessToken="accessToken"
       usersWithNoGroup
     />
 
@@ -43,8 +44,7 @@
 </template>
 
 <script>
-import axios from "axios"
-import VueCookies from "vue-cookies"
+import { useFetch } from "./requestWrapper";
 
 import UserList from "./UserList.vue"
 
@@ -56,6 +56,10 @@ import MagnifyIcon from "vue-material-design-icons/Magnify.vue"
 export default {
   name: "UserPicker",
   props: {
+    accessToken: {
+      type: String,
+      default: () => null,
+    },
     groupManagerApiUrl: {
       type: String,
       default() {
@@ -92,13 +96,7 @@ export default {
       error: null,
       selected_group: undefined,
       search: "",
-    }
-  },
-  mounted() {
-    const jwt = VueCookies.get("jwt")
-    if (jwt && !axios.defaults.headers.common.Authorization) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`
-    }
+    };
   },
   methods: {
     get_users_of_group(group) {
@@ -110,8 +108,7 @@ export default {
       const url = `${this.groupManagerApiUrl}/v3/groups/${group_id}/members`
       const params = { batch_size: -1 }
 
-      axios
-        .get(url, { params })
+      useFetch(url, params, this.accessToken)
         .then(({ data }) => {
           this.users = data.items
         })
